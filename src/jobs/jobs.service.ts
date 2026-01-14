@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { JobQueryType, JobType } from 'src/types/jopType';
 import { Job } from './schemas/job.schema';
 import { Model } from 'mongoose';
@@ -13,25 +13,34 @@ export class JobsService {
         private readonly jobModel: Model<Job>,
     ) {}
     
-    async searchAndStoreJobs(query:string, country= 'us'){
-       try{
-        const response = await axios.get(process.env.API_URL!, {
-            params: {},
-            headers:{
+    async searchAndStoreJobs(query: string, country = 'us') {
+       if (!query?.trim()) {
+        throw new BadRequestException('Query term is required');
+       }
+
+       try {
+        const response = await axios.get(process.env.RAPID_API_URL!, {
+            params: {
+                query: query,    
+                location: country,
+                num_pages: '1',
+                page: '1',
+            },
+            headers: {
                 'X-RapidAPI-Key': process.env.RAPID_API_KEY!,
-                'X-RapidAPI-Host': process.env.API_HOST!,
+                'X-RapidAPI-Host': process.env.RAPID_API_HOST!,
             },
         });
 
-        const jobs = response.data?.data??[];
+        const jobs = response.data?.data ?? [];
 
         const mappedJobs : CreateJobDto[] = jobs.map((job:any) => 
             this.mapApiJobToDto(job),
         );
         
-        if(mappedJobs.length > 0){
+        if (mappedJobs.length > 0) {
             await this.jobModel.bulkWrite(
-                mappedJobs.map((job) =>({
+                mappedJobs.map((job) => ({
                     updateOne: {
                         filter: { _id: job._id },
                         update: { $set: job },
@@ -41,19 +50,41 @@ export class JobsService {
             );
         }
 
-        return  mappedJobs;
+        return mappedJobs;
     
-       } catch(err){
-        console.error("Error searching and storing jobs:", err);
+       } catch (err: any) {
+            throw new BadRequestException(`Failed to fetch/store jobs from external API`);
        }
     }
-    // Define your service methods here
-    findAll(query?: JobQueryType){
-        return this.jobModel.find().sort({ createdAt: -1 }).lean();
+    // DB search / listing endpoint backed by Mongo
+    findAll(query?: JobQueryType) {
+        if (!query) {
+            return this.jobModel.find().lean();
+        }
+
+        const mongoQuery: Record<string, any> = {};
+
+        if (query.job_title) {
+            mongoQuery.job_title = { $regex: query.job_title, $options: 'i' };
+        }
+
+        if (query.employer_name) {
+            mongoQuery.employer_name = { $regex: query.employer_name, $options: 'i' };
+        }
+
+        if (query.job_location) {
+            mongoQuery.job_location = { $regex: query.job_location, $options: 'i' };
+        }
+
+        if (query.employmentType) {
+            mongoQuery.job_employment_type = query.employmentType;
+        }
+
+        return this.jobModel.find(mongoQuery).lean();
     }
 
-    findOne(id: number) {
-        return `This action returns a #${id} job from the service`;
+    findOne(id: string) {
+        return this.jobModel.findOne({ _id: id }).lean();
     }
     
     create(dto: CreateJobDto) {

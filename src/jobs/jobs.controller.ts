@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Delete, Get, Param, Post, Put, Query } from '@nestjs/common';
 import * as jopType from 'src/types/jopType';
 import { JobsService } from './jobs.service';
 import { CreateJobDto } from './dto/create-job.dto';
@@ -9,13 +9,13 @@ export class JobsController {
    constructor(private readonly jobsService: JobsService) {}
 
    @Get()
-   findManyJobs( @Query('query') query:jopType.JobQueryType ) {
-    return this.jobsService.findAll(query);
+    findManyJobs(@Query() query: jopType.JobQueryType) {
+     return this.jobsService.findAll(query);
    }
 
    @Get(':id')
-   findOneJob(@Param('id') id: string | number) {
-    return this.jobsService.findOne(Number(id));
+   findOne(@Param('id') id: string ) {
+    return this.jobsService.findOne(id);
    }
 
    @Post()
@@ -34,7 +34,17 @@ export class JobsController {
    }
    
    @Get('search')
-    searchJobs(@Query() dto: SearchJobDto) {
-        return this.jobsService.searchAndStoreJobs(dto.query, dto.country);
+    searchJobs(
+        @Query('query') query?: string,
+        @Query('title') title?: string,
+        @Query('country') country = 'us',
+    ) {
+        const searchTerm = query ?? title;
+
+        if (!searchTerm || !searchTerm.trim()) {
+            throw new BadRequestException('Either "query" or "title" parameter is required');
+        }
+
+        return this.jobsService.searchAndStoreJobs(searchTerm, country);
     }
 }
