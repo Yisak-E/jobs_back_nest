@@ -57,10 +57,10 @@ export class JobsService {
     }
     
     create(dto: CreateJobDto) {
-        return "This action creates a new job in the service";
+        return this.jobModel.create(dto);
     }
     update(id: string, updateJobDto: JobType) {
-        return `This action updates a #${id} job in the service`;
+        return this.jobModel.findByIdAndUpdate(id, updateJobDto, { new: true });
     }
     deleteJob(id: string) {
         return this.jobModel.findByIdAndDelete(id);

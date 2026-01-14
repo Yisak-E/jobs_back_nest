@@ -23,7 +23,7 @@ export class JobsController {
     return this.jobsService.create(dto);
    }
 
-   @Put(':id')
+   @Put(':id') // @Patch could also be used for partial updates
    updateJob(@Param('id') id: string, @Body() updateJobDto: jopType.JobType) {
     return this.jobsService.update(id, updateJobDto);
    }
