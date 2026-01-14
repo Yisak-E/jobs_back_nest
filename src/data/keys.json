@@ -1,0 +1,114 @@
+[
+    {
+      "name": "projects/moody-bb55f/databases/(default)/documents/search_keywords/abu",
+      "fields": {
+        "keyword": {
+          "stringValue": "abu"
+        },
+        "count": {
+          "integerValue": "2"
+        },
+        "updatedAt": {
+          "timestampValue": "2026-01-11T18:44:09.094Z"
+        }
+      },
+      "createTime": "2026-01-11T18:43:41.986390Z",
+      "updateTime": "2026-01-11T18:44:09.100281Z"
+    },
+    {
+      "name": "projects/moody-bb55f/databases/(default)/documents/search_keywords/abudhabi",
+      "fields": {
+        "updatedAt": {
+          "timestampValue": "2026-01-11T19:44:22.547Z"
+        },
+        "keyword": {
+          "stringValue": "abudhabi"
+        },
+        "count": {
+          "integerValue": "1"
+        }
+      },
+      "createTime": "2026-01-11T19:44:22.559383Z",
+      "updateTime": "2026-01-11T19:44:22.559383Z"
+    },
+    {
+      "name": "projects/moody-bb55f/databases/(default)/documents/search_keywords/backend",
+      "fields": {
+        "keyword": {
+          "stringValue": "backend"
+        },
+        "count": {
+          "integerValue": "1"
+        },
+        "updatedAt": {
+          "timestampValue": "2026-01-11T19:44:22.525Z"
+        }
+      },
+      "createTime": "2026-01-11T19:44:22.542345Z",
+      "updateTime": "2026-01-11T19:44:22.542345Z"
+    },
+    {
+      "name": "projects/moody-bb55f/databases/(default)/documents/search_keywords/dhabi",
+      "fields": {
+        "keyword": {
+          "stringValue": "dhabi"
+        },
+        "count": {
+          "integerValue": "2"
+        },
+        "updatedAt": {
+          "timestampValue": "2026-01-11T18:44:09.104Z"
+        }
+      },
+      "createTime": "2026-01-11T18:43:41.996634Z",
+      "updateTime": "2026-01-11T18:44:09.110419Z"
+    },
+    {
+      "name": "projects/moody-bb55f/databases/(default)/documents/search_keywords/nestjs",
+      "fields": {
+        "count": {
+          "integerValue": "1"
+        },
+        "keyword": {
+          "stringValue": "nestjs"
+        },
+        "updatedAt": {
+          "timestampValue": "2026-01-11T19:44:22.504Z"
+        }
+      },
+      "createTime": "2026-01-11T19:44:22.521024Z",
+      "updateTime": "2026-01-11T19:44:22.521024Z"
+    },
+    {
+      "name": "projects/moody-bb55f/databases/(default)/documents/search_keywords/next",
+      "fields": {
+        "updatedAt": {
+          "timestampValue": "2026-01-11T18:44:09.064Z"
+        },
+        "count": {
+          "integerValue": "2"
+        },
+        "keyword": {
+          "stringValue": "next"
+        }
+      },
+      "createTime": "2026-01-11T18:43:41.974999Z",
+      "updateTime": "2026-01-11T18:44:09.083167Z"
+    },
+    {
+      "name": "projects/moody-bb55f/databases/(default)/documents/search_keywords/software",
+      "fields": {
+        "count": {
+          "integerValue": "1"
+        },
+        "keyword": {
+          "stringValue": "software"
+        },
+        "updatedAt": {
+          "timestampValue": "2026-01-11T18:43:41.829Z"
+        }
+      },
+      "createTime": "2026-01-11T18:43:41.942992Z",
+      "updateTime": "2026-01-11T18:43:41.942992Z"
+    }
+  ]
