@@ -1,16 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { KeywordModel } from '../schemas/keyword.schema';
+import { Keyword } from './schemas/keyword.schema';
 
 @Injectable()
 export class KeywordsService {
     constructor(
-        @InjectModel(KeywordModel.name) private keywordModel: Model<KeywordModel>,
+        @InjectModel(Keyword.name) private keywordModel: Model<Keyword>,
     ) {}
 
-    async saveKeywords(keywordStrs: string){
-        const words = keywordStrs.toLowerCase()
+    async saveKeywords(dto: {name: string}) {
+        const words = dto.name.toLowerCase()
             .split(/[\s,]+/)
             .map((w)=> w.replace(/[^a-z0-9]/g, ''))
             .filter(w => w.length > 2);
@@ -38,6 +38,23 @@ export class KeywordsService {
             .sort({frequency: -1})
             .limit(40)
             .lean();
+    }
+
+    async deleteKeyword(id: string) {
+        return this.keywordModel.findByIdAndDelete(id);
+    }
+
+    async updateKeyword(id: string, dto: {name: string, frequency?: number }) {
+        const word = dto.name.toLowerCase().replace(/[^a-z0-9]/g, '');
+        return this.keywordModel.findByIdAndUpdate(
+            id,
+            {
+                keyword: word,
+                frequency: dto.frequency ?? 1,
+                updatedAt: new Date(),
+            },
+            {new: true},
+        );
     }
 
 }

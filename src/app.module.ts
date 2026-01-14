@@ -7,9 +7,11 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports: [ 
-     MongooseModule.forRoot(process.env.MONGO_URI!),
-
-    JobsModule, KeywordsModule],
+    // Use env MONGO_URI if set, otherwise fall back to local default
+    MongooseModule.forRoot(process.env.MONGO_URI ?? 'mongodb://localhost:27017/jobsdb'),
+    JobsModule,
+    KeywordsModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

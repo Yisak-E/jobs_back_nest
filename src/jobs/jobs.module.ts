@@ -1,8 +1,14 @@
 import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
 import { JobsController } from './jobs.controller';
 import { JobsService } from './jobs.service';
+import { Job, JobSchema } from './schemas/job.schema';
 
 @Module({
+  imports: [
+    // Expose the JobModel provider so it can be injected into JobsService
+    MongooseModule.forFeature([{ name: Job.name, schema: JobSchema }]),
+  ],
   controllers: [JobsController],
   providers: [JobsService]
 })
